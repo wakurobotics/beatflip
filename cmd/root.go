@@ -51,11 +51,15 @@ func initConfig() {
 }
 
 func initLogger() {
-	level, err := logrus.ParseLevel(viper.GetString("log.level"))
-	if err != nil {
-		log.Fatalf("parsing log level failed: %+v", err)
+	if viper.InConfig("log.level") {
+		level, err := logrus.ParseLevel(viper.GetString("log.level"))
+		if err != nil {
+			log.Fatalf("parsing log level failed: %+v", err)
+		}
+		logrus.SetLevel(level)
+	} else {
+		logrus.SetLevel(logrus.InfoLevel)
 	}
-	logrus.SetLevel(level)
 
 	switch viper.GetString("log.formatter") {
 	case "json":

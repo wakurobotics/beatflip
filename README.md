@@ -22,13 +22,17 @@ For a full list of commands run
 beatflip --help
 ```
 
+### beatflip init
+
+Initialize a new configuration file.
+
 ### beatflip supervise
 
 Start the supervisor mode.
 
 ## Config-File
 
-Configuration files are optional. You can also choose to either use command arguments or env vars. However, beatflip looks for an optional config file named `.beatflip.yml` in the current working directory. For a full example of the configuration file, please have a look at [`https://github.com/wakurobotics/beatflip/raw/master/.beatflip.yml`](https://github.com/wakurobotics/beatflip/raw/master/.beatflip.yml).
+Configuration files are optional. You can also choose to either use command arguments or env vars. However, beatflip looks for an optional config file named `.beatflip.yml` in the current working directory. For a full example of the configuration file, please have a look at [`https://github.com/wakurobotics/beatflip/raw/master/cmd/.beatflip.yml`](https://github.com/wakurobotics/beatflip/raw/master/cmd/.beatflip.yml).
 
 ## OS Signals
 
