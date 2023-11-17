@@ -1,5 +1,7 @@
 # beatflip - a minimal supervisor :fairy:
 
+[![tests](https://github.com/wakurobotics/beatflip/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/wakurobotics/beatflip/actions/workflows/tests.yml)
+
 Beatflip is a minimal supervisor tailored to single-process applications. It comes with the following features:
 
 - :green_heart: **Process uptime**: monitors processes and restarts them if exited
