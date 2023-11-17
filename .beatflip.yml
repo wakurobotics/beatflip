@@ -1,0 +1,70 @@
+log:
+  # optional, default: debug
+  level: debug
+
+  # supported log-formatters are "text" and "json"
+  # optional, default: text
+  # formatter: json
+
+  # `file` allows you to configure log-files incl. log-rotation
+  # file:
+  #   # Filename is the file to write logs to.  Backup log files will be retained
+  #   # in the same directory. It uses <processname>-lumberjack.log in os.TempDir() if empty.
+  #   filename:
+
+  #   # MaxSize is the maximum size in megabytes of the log file before it gets
+  #   # rotated. It defaults to 100 megabytes.
+  #   maxsize: 100  # megabytes
+
+  #   # MaxAge is the maximum number of days to retain old log files based on the
+  #   # timestamp encoded in their filename.  Note that a day is defined as 24
+  #   # hours and may not exactly correspond to calendar days due to daylight
+  #   # savings, leap seconds, etc. The default is not to remove old log files
+  #   # based on age.
+  #   maxage:
+
+  #   # MaxBackups is the maximum number of old log files to retain.  The default
+  #   # is to retain all old log files (though MaxAge may still cause them to get
+  #   # deleted.)
+  #   maxbackups:
+
+  #   # LocalTime determines if the time used for formatting the timestamps in
+  #   # backup files is the computer's local time.  The default is to use UTC
+  #   # time.
+  #   localtime:
+
+  #   # Compress determines if the rotated log files should be compressed
+  #   # using gzip. The default is not to perform compression.
+  #   compress: true
+
+service:
+  # Bin is the command to run including it's path. If the path is relative,
+  # it is evaluated relative to the current working directory.
+  # If the updater is enabled, it will try to replace the binary
+  # specified in `bin` after downloading a new version.
+  bin: ./<your-binary>
+
+  # args hold potential additional command line arguments passed when starting the service
+  args:
+    - "start"
+    - "--verbose"
+
+updater:
+  # `enable` enables / disables the auto-updater
+  # optional, default: false
+  enabled: true
+
+  # interval specifies the update-interval
+  # default: 15 min
+  interval: 15m
+
+  # Version specifies the command for beatflip to run in order to retrieve
+  # the current version of the service. If the path is relative,
+  # it is evaluated relative to the current working directory.
+  version:
+    bin: ./<your-binary>
+    args:
+      - version
+
+  # Server specifies the URL to the update-server / S3 bucket
+  server: <your-server>
