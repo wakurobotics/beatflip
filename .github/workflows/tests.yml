@@ -22,3 +22,12 @@ jobs:
 
       - name: Test
         run: go test -v ./...
+
+      - name: Coverage
+        run: go tool cover -func=coverage.out
+
+      - name: Upload coverage to GitHub
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: ./coverage.out
