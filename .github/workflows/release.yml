@@ -24,33 +24,33 @@ jobs:
         env:
           GOOS: windows
           GOARCH: amd64
-        run: go build -v -ldflags="-X github.com/wakurobotics/beatflip/cmd.version=$VERSION" -o beatflip-windows-amd64.exe
+        run: go build -v -ldflags="-X github.com/wakurobotics/beatflip/cmd.version=${{ env.VERSION }}" -o beatflip-windows-amd64.exe
 
       - name: Build MacOS
         env:
           GOOS: darwin
           GOARCH: amd64
-        run: go build -v -ldflags="-X github.com/wakurobotics/beatflip/cmd.version=$VERSION" -o beatflip-macos-amd64
+        run: go build -v -ldflags="-X github.com/wakurobotics/beatflip/cmd.version=${{ env.VERSION }}" -o beatflip-macos-amd64
 
       - name: Build Linux
         env:
           GOOS: linux
           GOARCH: amd64
-        run: go build -v -ldflags="-X github.com/wakurobotics/beatflip/cmd.version=$VERSION" -o beatflip-linux-amd64
+        run: go build -v -ldflags="-X github.com/wakurobotics/beatflip/cmd.version=${{ env.VERSION }}" -o beatflip-linux-amd64
 
       - name: Build ARM
         env:
           GOOS: linux
           GOARCH: arm
-        run: go build -v -ldflags="-X github.com/wakurobotics/beatflip/cmd.version=$VERSION" -o beatflip-linux-arm
+        run: go build -v -ldflags="-X github.com/wakurobotics/beatflip/cmd.version=${{ env.VERSION }}" -o beatflip-linux-arm
 
       - name: Release
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: v$VERSION
-          tag_name: $VERSION
+          name: v${{ env.VERSION }}
+          tag_name: ${{ env.VERSION }}
           files: |
             beatflip-windows-amd64.exe
             beatflip-macos-amd64
