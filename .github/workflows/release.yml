@@ -16,44 +16,46 @@ jobs:
         with:
           go-version: 1.21
 
-      - name: Get dependencies
-        run: go mod download
-
       - name: Get the version
         id: get_version
-        run: echo ::set-output name=VERSION::$(git describe --tags --abbrev=0)
+        run: echo "VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
 
       - name: Build Windows
         env:
           GOOS: windows
           GOARCH: amd64
-        run: go build -v -ldflags="-X github.com/wakurobotics/beatflip/cmd.version=${{ steps.get_version.outputs.VERSION }}" -o beatflip-windows-amd64.exe
+        run: go build -v -ldflags="-X github.com/wakurobotics/beatflip/cmd.version=$VERSION" -o beatflip-windows-amd64.exe
 
       - name: Build MacOS
         env:
           GOOS: darwin
           GOARCH: amd64
-        run: go build -v -ldflags="-X github.com/wakurobotics/beatflip/cmd.version=${{ steps.get_version.outputs.VERSION }}" -o beatflip-macos-amd64
+        run: go build -v -ldflags="-X github.com/wakurobotics/beatflip/cmd.version=$VERSION" -o beatflip-macos-amd64
 
       - name: Build Linux
         env:
           GOOS: linux
           GOARCH: amd64
-        run: go build -v -ldflags="-X github.com/wakurobotics/beatflip/cmd.version=${{ steps.get_version.outputs.VERSION }}" -o beatflip-linux-amd64
+        run: go build -v -ldflags="-X github.com/wakurobotics/beatflip/cmd.version=$VERSION" -o beatflip-linux-amd64
 
       - name: Build ARM
         env:
           GOOS: linux
           GOARCH: arm
-        run: go build -v -ldflags="-X github.com/wakurobotics/beatflip/cmd.version=${{ steps.get_version.outputs.VERSION }}" -o beatflip-linux-arm
+        run: go build -v -ldflags="-X github.com/wakurobotics/beatflip/cmd.version=$VERSION" -o beatflip-linux-arm
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
+      - name: Release
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.get_version.outputs.VERSION }}
-          release_name: v${{ steps.get_version.outputs.VERSION }}
+          name: v$VERSION
+          tag_name: $VERSION
+          files: |
+            beatflip-windows-amd64.exe
+            beatflip-macos-amd64
+            beatflip-linux-amd64
+            beatflip-linux-arm
           draft: true
           prerelease: false
+          generate_release_notes: true
