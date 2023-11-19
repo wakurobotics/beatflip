@@ -114,9 +114,8 @@ type manifest struct {
 }
 
 func (m *manifest) checksum(b []byte) error {
-	h := sha256.New()
-	h.Write(b)
-	sum := hex.EncodeToString(h.Sum(nil))
+	hash := sha256.Sum256(b)
+	sum := hex.EncodeToString(hash[:])
 	if sum != m.Sha256 {
 		return errors.New("checksum failed")
 	}
