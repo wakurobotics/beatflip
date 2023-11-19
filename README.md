@@ -1,6 +1,8 @@
-# beatflip - a minimal supervisor :fairy:
+[![tests](https://github.com/wakurobotics/beatflip/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/wakurobotics/beatflip/actions/workflows/tests.yml) [![Windows Release](https://img.shields.io/badge/Windows-Download-blue)](https://github.com/wakurobotics/beatflip/releases/latest/download/beatflip-windows-amd64.exe) [![MacOS Release](https://img.shields.io/badge/MacOS-Download-blue)](https://github.com/wakurobotics/beatflip/releases/latest/download/beatflip-macos-amd64) [![Linux Release](https://img.shields.io/badge/Linux-Download-blue)](https://github.com/wakurobotics/beatflip/releases/latest/download/beatflip-linux-amd64) [![ARM Release](https://img.shields.io/badge/ARM-Download-blue)](https://github.com/wakurobotics/beatflip/releases/latest/download/beatflip-linux-arm)
 
-[![tests](https://github.com/wakurobotics/beatflip/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/wakurobotics/beatflip/actions/workflows/tests.yml)
+# beatflip :fairy:
+
+> a minimal supervisor
 
 Beatflip is a minimal supervisor tailored to single-process applications. It comes with the following features:
 

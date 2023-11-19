@@ -2,9 +2,9 @@ name: tests
 
 on:
   push:
-    branches: ["master"]
+    branches: ['master']
   pull_request:
-    branches: ["master"]
+    branches: ['master']
 
 jobs:
   build:
@@ -15,16 +15,13 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: "1.21"
+          go-version: '1.21'
 
       - name: Build
         run: go build -v ./...
 
       - name: Test
-        run: go test -v ./...
-
-      - name: Coverage
-        run: go tool cover -func=coverage.out
+        run: go test -p 1 -timeout 10s -coverprofile coverage.out -v ./...
 
       - name: Upload coverage to GitHub
         uses: actions/upload-artifact@v2
