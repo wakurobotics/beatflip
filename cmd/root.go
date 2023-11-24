@@ -68,11 +68,10 @@ func initLogger() {
 		logrus.SetFormatter(&logrus.TextFormatter{})
 	}
 
-	if viper.InConfig("file") {
+	if viper.InConfig("log.file") {
 		jack := &lumberjack.Logger{}
-		err := viper.UnmarshalKey("file", jack)
+		err := viper.UnmarshalKey("log.file", jack)
 		cobra.CheckErr(err)
 		logrus.SetOutput(io.MultiWriter(os.Stdout, jack))
 	}
-
 }

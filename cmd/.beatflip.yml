@@ -37,34 +37,39 @@ log:
   #   # using gzip. The default is not to perform compression.
   #   compress: true
 
-service:
-  # Bin is the command to run including it's path. If the path is relative,
-  # it is evaluated relative to the current working directory.
-  # If the updater is enabled, it will try to replace the binary
-  # specified in `bin` after downloading a new version.
-  bin: ./<your-binary>
-
-  # args hold potential additional command line arguments passed when starting the service
-  args:
-    - "start"
-    - "--verbose"
-
-updater:
-  # `enable` enables / disables the auto-updater
-  # optional, default: false
-  enabled: true
-
-  # interval specifies the update-interval
-  # default: 15 min
-  interval: 15m
-
-  # Version specifies the command for beatflip to run in order to retrieve
-  # the current version of the service. If the path is relative,
-  # it is evaluated relative to the current working directory.
-  version:
+services:
+  your-service-name:
+    # Bin is the command to run including it's path. If the path is relative,
+    # it is evaluated relative to the current working directory.
+    # If the updater is enabled, it will try to replace the binary
+    # specified in `bin` after downloading a new version.
     bin: ./<your-binary>
-    args:
-      - version
 
-  # Server specifies the URL to the update-server / S3 bucket
-  server: <your-server>
+    # args hold potential additional command line arguments passed when starting the service
+    args:
+      - "start"
+      - "--verbose"
+
+    # instances specifies the number of instances to run
+    instances: 1
+
+    # autoupdates specifies the configuration for the auto-updater
+    autoupdate:
+      # `enable` enables / disables the auto-updater
+      # optional, default: false
+      enabled: true
+
+      # interval specifies the update-interval
+      # default: 15 min
+      interval: 15m
+
+      # Version specifies the command for beatflip to run in order to retrieve
+      # the current version of the service. If the path is relative,
+      # it is evaluated relative to the current working directory.
+      version:
+        bin: ./<your-binary>
+        args:
+          - version
+
+      # Server specifies the URL to the update-server / S3 bucket
+      server: <your-server>

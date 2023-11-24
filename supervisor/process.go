@@ -1,33 +1,59 @@
 package supervisor
 
 import (
-	"fmt"
+	"errors"
 	"io"
 	"os"
 	"os/exec"
 	"strings"
-	"syscall"
 
 	"github.com/sirupsen/logrus"
-	"github.com/spf13/viper"
 )
 
-var cmd *exec.Cmd
+type Command struct {
+	Bin  string   `mapstructure:"bin"`
+	Args []string `mapstructure:"args"`
+}
 
-func terminate(sig os.Signal) error {
-	if cmd != nil && cmd.Process != nil && cmd.ProcessState == nil {
-		return cmd.Process.Signal(sig)
+func (c *Command) validate() error {
+	if c.Bin == "" {
+		return errors.New("bin must not be empty")
 	}
 	return nil
 }
 
-func start() error {
+func (c *Command) cmd() *exec.Cmd {
+	return exec.Command(c.Bin, c.Args...)
+}
+func (c *Command) String() string {
+	return c.Bin + " " + strings.Join(c.Args, " ")
+}
+
+func (s *Supervisor) terminateAll(sig os.Signal) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	var errs = []error{}
+	for cmd := range s.instances {
+		if cmd != nil && cmd.Process != nil && cmd.ProcessState == nil {
+			errs = append(errs, cmd.Process.Signal(sig))
+		}
+	}
+	return errors.Join(errs...)
+}
+
+func (s *Supervisor) spawnInstance() error {
+	cmd := s.config.Command.cmd()
+	s.mu.Lock()
+	s.instances[cmd] = empty
+	s.mu.Unlock()
+
 	defer func() {
-		startSignal <- struct{}{}
+		s.mu.Lock()
+		defer s.mu.Unlock()
+		delete(s.instances, cmd)
+		s.startSignal <- empty
 	}()
-	c := viper.GetString("service.bin")
-	args := viper.GetStringSlice("service.args")
-	cmd = exec.Command(c, args...)
 
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
@@ -40,19 +66,11 @@ func start() error {
 	go pipeUntilClosed(stdout, os.Stdout)
 	go pipeUntilClosed(stderr, os.Stderr)
 
-	fullCmd := c + " " + strings.Join(args, " ")
-	logrus.WithField("command", fullCmd).Info("(re)-starting service")
-	err = cmd.Start()
-	logrus.WithError(err).Info("service stopped")
+	log := logrus.WithField("command", s.config.Command.String())
+	log.Info("starting service")
+	err = cmd.Run()
+	log.WithError(err).Info("service stopped")
 	return err
-}
-
-func restart() error {
-	if err := terminate(syscall.SIGTERM); err != nil {
-		return fmt.Errorf("failed to terminate service before restart: %+v", err)
-	}
-	startSignal <- struct{}{}
-	return nil
 }
 
 func pipeUntilClosed(r io.ReadCloser, out *os.File) {
