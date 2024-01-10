@@ -20,10 +20,23 @@ go install github.com/wakurobotics/beatflip@latest
 
 ## Usage
 
-For a full list of commands run
-
 ```bash
-beatflip --help
+$ beatflip --help
+Usage:
+  beatflip [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  init        initialize a new configuration file in the current directoey
+  supervise
+  version
+
+Flags:
+      --config string   config file (default is '.beatflip.yml')
+  -h, --help            help for beatflip
+
+Use "beatflip [command] --help" for more information about a command.
 ```
 
 ### beatflip init
@@ -36,7 +49,11 @@ Start the supervisor mode.
 
 ## Config-File
 
-Configuration files are optional. You can also choose to either use command arguments or env vars. However, beatflip looks for an optional config file named `.beatflip.yml` in the current working directory. For a full example of the configuration file, please have a look at [`https://github.com/wakurobotics/beatflip/raw/master/cmd/.beatflip.yml`](https://github.com/wakurobotics/beatflip/raw/master/cmd/.beatflip.yml).
+You can initialize a new configuration file via `beatflip init`.
+
+By default, Beatflip looks for a config file named `.beatflip.yml` in the current working directory. This can be overridden via the `--config` flag.
+
+For a full example of the configuration file, please have a look at [`https://github.com/wakurobotics/beatflip/raw/master/cmd/.beatflip.yml`](https://github.com/wakurobotics/beatflip/raw/master/cmd/.beatflip.yml).
 
 ## OS Signals
 
