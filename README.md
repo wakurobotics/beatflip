@@ -18,6 +18,14 @@ To install / update beatflip run
 go install github.com/wakurobotics/beatflip@latest
 ```
 
+### Docker
+
+```bash
+git clone github.com/wakurobotics/beatflip && cd beatflip
+docker build -t wakurobotics/beatflip .
+docker run wakurobotics/beatflip --help
+```
+
 ## Usage
 
 ```bash
