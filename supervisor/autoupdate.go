@@ -11,6 +11,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 	"runtime"
 	"strings"
 	"syscall"
@@ -58,7 +59,7 @@ func (a *AutoUpdate) validate() error {
 	return nil
 }
 
-func (s *Supervisor) check_updates(ctx context.Context) {
+func (s *Supervisor) checkUpdates(ctx context.Context) {
 	if err := s.update(); err != nil {
 		log.Printf("failed to update: %+v\n", err)
 	}
@@ -114,8 +115,12 @@ func (s *Supervisor) update() error {
 		return fmt.Errorf("failed to terminate: %+v", err)
 	}
 
-	// TODO: impl
-	fmt.Printf("TODO: flipping binaries (%v bytes)\n", len(b))
+	log.Infof("flipping binaries (%v bytes)", len(b))
+	if err := os.WriteFile(s.config.Bin, b, 0644); err != nil {
+		return err
+	}
+
+	// TODO: add post-update hooks here
 
 	return nil
 }

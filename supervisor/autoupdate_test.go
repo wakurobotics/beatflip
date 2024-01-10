@@ -26,7 +26,7 @@ func TestSupervisor_check_updates(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	go func() {
 		running.Store(true)
-		supervisor.check_updates(ctx)
+		supervisor.checkUpdates(ctx)
 		running.Store(false)
 	}()
 

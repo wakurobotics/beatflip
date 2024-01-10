@@ -80,7 +80,7 @@ func (s *Supervisor) Run() error {
 
 	ctx, cancelUpdates := context.WithCancel(context.Background())
 	if s.config.AutoUpdate.Enabled {
-		go s.check_updates(ctx)
+		go s.checkUpdates(ctx)
 	}
 
 	s.boot()
