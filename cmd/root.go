@@ -45,12 +45,12 @@ func initConfig() {
 
 	viper.AutomaticEnv()
 
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
-	} else {
+	if err := viper.ReadInConfig(); err != nil {
 		fmt.Printf("Error reading config from '%s': %v", viper.ConfigFileUsed(), err)
 		os.Exit(1)
 	}
+
+	fmt.Println("Using config file:", viper.ConfigFileUsed())
 }
 
 func initLogger() {
