@@ -18,7 +18,6 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
-	"golang.org/x/mod/semver"
 )
 
 const (
@@ -95,7 +94,12 @@ func (s *Supervisor) update() error {
 		"latest":  m.Version,
 	})
 
-	if semver.Compare(m.Version, currentVersion) < 1 {
+	manifestVersion, err := m.parseVersion()
+	if err != nil {
+		return fmt.Errorf("failed to parse manifest Version: %s: %+v", m.Version, err)
+	}
+
+	if compareSemver(manifestVersion, currentVersion) < 1 {
 		// version greater or equal; nothing to do
 		log.Info("current version greater or equal; nothing to do")
 		return nil
@@ -125,17 +129,21 @@ func (s *Supervisor) update() error {
 	return nil
 }
 
-func (s *Supervisor) getCurrentVersion() (string, error) {
+func (s *Supervisor) getCurrentVersion() ([]int, error) {
 	v, err := s.config.AutoUpdate.Version.cmd().Output()
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	return strings.Trim(string(v), " \n"), nil
+	return parseSemver(string(v))
 }
 
 type manifest struct {
 	Version string `json:"version"`
 	Sha256  string `json:"sha256"`
+}
+
+func (m *manifest) parseVersion() ([]int, error) {
+	return parseSemver(m.Version)
 }
 
 func (m *manifest) checksum(b []byte) error {
