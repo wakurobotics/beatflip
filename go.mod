@@ -8,7 +8,6 @@ require (
 	github.com/spf13/viper v1.17.0
 	github.com/stretchr/testify v1.8.4
 	go.uber.org/atomic v1.9.0
-	golang.org/x/mod v0.14.0
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 )
 
