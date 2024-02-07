@@ -13,7 +13,7 @@ func TestSupervisor_compareSemver(t *testing.T) {
 	res = compareSemver([]int{1, 0, 0}, []int{1, 1, 0})
 	assert.Equal(t, 1, res)
 
-	res = compareSemver([]int{1, 0, 0}, []int{1, 0, 1})
+	res = compareSemver([]int{1, 0, 0}, []int{1, 0, 2})
 	assert.Equal(t, 1, res)
 
 	res = compareSemver([]int{1, 0, 0}, []int{1, 1, 1})

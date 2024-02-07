@@ -89,17 +89,17 @@ func (s *Supervisor) update() error {
 		return err
 	}
 
-	log := logrus.WithFields(logrus.Fields{
-		"current": currentVersion,
-		"latest":  m.Version,
-	})
-
 	manifestVersion, err := m.parseVersion()
 	if err != nil {
 		return fmt.Errorf("failed to parse manifest Version: %s: %+v", m.Version, err)
 	}
 
-	if compareSemver(manifestVersion, currentVersion) < 1 {
+	log := logrus.WithFields(logrus.Fields{
+		"current": currentVersion,
+		"latest":  manifestVersion,
+	})
+
+	if compareSemver(currentVersion, manifestVersion) < 1 {
 		// version greater or equal; nothing to do
 		log.Info("current version greater or equal; nothing to do")
 		return nil
